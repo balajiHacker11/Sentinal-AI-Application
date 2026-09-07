@@ -1,0 +1,8 @@
+{
+  "name": "Sentinel AI",
+  "description": "Tamil Nadu Safety app with Special Power Button SOS guard (runs even when app is closed / power button tries to off), Under 15 Child Safety Routing (Childline 1098), 15+ Women Helpline 1091, direct calls, loud siren, offline SMS to guardians, and voice recording.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
