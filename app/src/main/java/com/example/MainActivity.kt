@@ -37,7 +37,11 @@ class MainActivity : ComponentActivity() {
     private fun handleSosIntent(intent: Intent?) {
         if (intent?.getBooleanExtra("EXTRA_AUTO_TRIGGER_POWER_SOS", false) == true) {
             val reason = intent.getStringExtra("EXTRA_TRIGGER_REASON") ?: "POWER_TRIGGER"
-            safetyViewModel.onPowerButtonDangerDetected(reason)
+            when (reason) {
+                "SCREAM_TRIGGER" -> safetyViewModel.triggerScreamAlertFromBackground()
+                "SHAKE_TRIGGER" -> safetyViewModel.triggerShakeAlertFromBackground()
+                else -> safetyViewModel.onPowerButtonDangerDetected(reason)
+            }
         }
     }
 

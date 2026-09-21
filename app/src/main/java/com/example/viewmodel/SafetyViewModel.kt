@@ -207,17 +207,38 @@ class SafetyViewModel(application: Application) : AndroidViewModel(application) 
         }
 
         val isGuardEnabled = prefs.getBoolean("power_button_guard_enabled", true)
+        val isShakeEnabled = prefs.getBoolean("shake_guard_enabled", true)
+        val isScreamEnabled = prefs.getBoolean("scream_guard_enabled", true)
         val triggerOnOff = prefs.getBoolean("power_button_trigger_on_off", true)
+
         powerButtonDetector.setTriggerOnPowerOff(triggerOnOff)
         powerButtonDetector.setDangerListener { reason ->
             onPowerButtonDangerDetected(reason)
         }
+
         if (isGuardEnabled) {
             powerButtonDetector.startListening()
+        }
+        if (isShakeEnabled) {
+            shakeMotionDetector.startListening()
+        }
+        if (isScreamEnabled && isAudioPermissionGranted()) {
+            screamDetector.startListening()
+            _isScreamListening.value = true
+        }
+
+        if (isGuardEnabled || isShakeEnabled || isScreamEnabled) {
             try {
                 PowerButtonSosService.start(application)
             } catch (_: Exception) {}
         }
+    }
+
+    private fun isAudioPermissionGranted(): Boolean {
+        return androidx.core.content.ContextCompat.checkSelfPermission(
+            getApplication(),
+            android.Manifest.permission.RECORD_AUDIO
+        ) == android.content.pm.PackageManager.PERMISSION_GRANTED
     }
 
     // Siren state
@@ -576,19 +597,37 @@ class SafetyViewModel(application: Application) : AndroidViewModel(application) 
         if (_isScreamListening.value) {
             screamDetector.stopListening()
             _isScreamListening.value = false
+            prefs.edit().putBoolean("scream_guard_enabled", false).apply()
+            PowerButtonSosService.updateConfig(getApplication())
             showNotice("Scream Detector Paused")
         } else {
             screamDetector.startListening()
             _isScreamListening.value = true
-            showNotice("🎙️ 24/7 Scream & HELP Voice Detector Active!")
+            prefs.edit().putBoolean("scream_guard_enabled", true).apply()
+            PowerButtonSosService.start(getApplication())
+            PowerButtonSosService.updateConfig(getApplication())
+            showNotice("🎙️ 24/7 Scream & HELP Voice Detector Active (Runs Even When Closed)!")
         }
     }
 
-    private fun onScreamOrDistressDetected() {
+    fun onScreamOrDistressDetected() {
+        val under15 = isUnder15.value
+        val contactToCall = if (under15) "1098" else primaryEmergencyNumber.value.ifBlank { "1091" }
+        val helplineLabel = if (under15) "Child Safety 1098" else "Women Helpline $contactToCall"
+
         // 1. Trigger haptic vibration feedback
         screamDetector.triggerHapticFeedback()
 
-        // 2. Automatically capture instant camera photo evidence
+        // 2. Direct emergency call (1098 for <15, 1091 for 15+)
+        sosManager.triggerDirectCall(contactToCall)
+
+        // 3. Blast loud emergency police siren alarm
+        if (!_isSirenActive.value) {
+            sirenPlayer.startSiren()
+            _isSirenActive.value = true
+        }
+
+        // 4. Automatically capture instant camera photo evidence
         val photoFile = cameraCaptureManager.captureIncidentPhoto("Distress Scream Detected")
         if (photoFile != null) {
             val entity = IncidentEvidenceEntity(
@@ -601,13 +640,55 @@ class SafetyViewModel(application: Application) : AndroidViewModel(application) 
             }
         }
 
-        // 3. Start audio recording if not already active
+        // 5. Start audio recording if not already active
         if (!_isRecordingAudio.value) {
             startAudioEvidenceRecording()
         }
 
-        // 4. Show high priority emergency dialog on screen
+        // 6. Send emergency SMS with GPS coordinates to guardians
+        viewModelScope.launch {
+            val guardians = guardiansList.value
+            val alertMsg = if (under15) {
+                "🚨 EMERGENCY CHILD SAFETY ALERT (<15 Age)!\nChild in danger! Distress scream/voice detected.\nDirect call to Childline 1098 dispatched. Urgent assistance needed!"
+            } else {
+                "🚨 EMERGENCY DANGER SOS ALERT!\nUrgent danger! Distress scream/voice detected.\nDirect call to Women Helpline 1091 dispatched. Urgent assistance needed!"
+            }
+            val smsResult = sosManager.sendEmergencySmsToGuardians(guardians, customMessage = alertMsg)
+            showNotice("🎙️ DISTRESS SCREAM DETECTED!\n• Direct Call: $helplineLabel ($contactToCall)\n• Loud Siren Alarm Sounding\n• Audio Evidence Recording Active\n• $smsResult")
+        }
+
+        // 7. Show high priority emergency dialog on screen
         _showScreamAlertDialog.value = true
+    }
+
+    fun triggerScreamAlertFromBackground() {
+        if (!_isSirenActive.value) {
+            _isSirenActive.value = true
+        }
+        if (!_isRecordingAudio.value) {
+            _isRecordingAudio.value = true
+        }
+        _showScreamAlertDialog.value = true
+    }
+
+    fun triggerShakeAlertFromBackground() {
+        if (!_isSirenActive.value) {
+            _isSirenActive.value = true
+        }
+        if (!_isRecordingAudio.value) {
+            _isRecordingAudio.value = true
+        }
+        _showShakeAlertDialog.value = true
+    }
+
+    fun testScreamDangerTrigger() {
+        showNotice("🎙️ Simulating Distress Scream Voice Detection...")
+        onScreamOrDistressDetected()
+    }
+
+    fun testShakeDangerTrigger() {
+        showNotice("🚨 Simulating Violent Shake Detection...")
+        onShakeEmergencyDetected()
     }
 
     fun dismissScreamDialog() {
@@ -620,10 +701,15 @@ class SafetyViewModel(application: Application) : AndroidViewModel(application) 
     fun toggleShakeDetection() {
         if (shakeMotionDetector.isListening.value) {
             shakeMotionDetector.stopListening()
+            prefs.edit().putBoolean("shake_guard_enabled", false).apply()
+            PowerButtonSosService.updateConfig(getApplication())
             showNotice("Shake & Motion Emergency Guard Paused")
         } else {
             shakeMotionDetector.startListening()
-            showNotice("🚨 Violent Shake & Motion Emergency Guard Active!")
+            prefs.edit().putBoolean("shake_guard_enabled", true).apply()
+            PowerButtonSosService.start(getApplication())
+            PowerButtonSosService.updateConfig(getApplication())
+            showNotice("🚨 24/7 Violent Shake Emergency Guard Active (Runs Even When Closed)!")
         }
     }
 
@@ -633,12 +719,13 @@ class SafetyViewModel(application: Application) : AndroidViewModel(application) 
         showNotice("Shake sensitivity: $label")
     }
 
-    private fun onShakeEmergencyDetected() {
-        val targetPhone = primaryEmergencyNumber.value
-        val helplineDesc = if (_isBelow18.value) "Child Safety Helpline ($targetPhone)" else "Women Helpline ($targetPhone)"
+    fun onShakeEmergencyDetected() {
+        val under15 = isUnder15.value
+        val contactToCall = if (under15) "1098" else primaryEmergencyNumber.value.ifBlank { "1091" }
+        val helplineDesc = if (under15) "Child Safety Helpline 1098" else "Women Helpline $contactToCall"
 
-        // 1. Trigger direct call to helpline based on age (1098 for <18, 1091 for 18+)
-        sosManager.triggerDirectCall(targetPhone)
+        // 1. Trigger direct call to helpline based on age (1098 for <15, 1091 for 15+)
+        sosManager.triggerDirectCall(contactToCall)
 
         // 2. Automatically trigger loud alarm siren
         if (!_isSirenActive.value) {
@@ -646,21 +733,37 @@ class SafetyViewModel(application: Application) : AndroidViewModel(application) 
             _isSirenActive.value = true
         }
 
-        // 3. Automatically send offline SMS with incident evidence / location to guardians
-        viewModelScope.launch {
-            val guardians = guardiansList.value
-            val latestPhoto = incidentEvidencesList.value.firstOrNull { it.mediaType == "PHOTO" }?.title
-            val latestAudio = audioRecordingsList.value.firstOrNull()?.title
-            val smsResult = sosManager.sendOfflineEvidenceSmsToGuardians(guardians, latestPhoto, latestAudio)
-            showNotice("🚨 MAXIMUM VIOLENT SHAKE DETECTED!\n• Direct Call to $helplineDesc Dispatched\n• Siren Sounding\n• $smsResult\n• Audio Evidence Recording Active")
-        }
-
-        // 4. Automatically start audio recording
+        // 3. Automatically start audio recording
         if (!_isRecordingAudio.value) {
             startAudioEvidenceRecording()
         }
 
-        // 5. Trigger alert dialog on screen
+        // 4. Capture photo evidence
+        val photoFile = cameraCaptureManager.captureIncidentPhoto("Violent Shake Incident")
+        if (photoFile != null) {
+            val entity = IncidentEvidenceEntity(
+                title = "Violent Shake Incident Photo",
+                mediaType = "PHOTO",
+                filePath = photoFile.absolutePath
+            )
+            viewModelScope.launch {
+                evidenceDao.insertEvidence(entity)
+            }
+        }
+
+        // 5. Automatically send offline SMS with incident evidence / location to guardians
+        viewModelScope.launch {
+            val guardians = guardiansList.value
+            val alertMsg = if (under15) {
+                "🚨 EMERGENCY CHILD SAFETY ALERT (<15 Age)!\nChild in danger! Violent shake detected.\nDirect call to Childline 1098 dispatched. Urgent assistance needed!"
+            } else {
+                "🚨 EMERGENCY DANGER SOS ALERT!\nUrgent danger! Violent shake detected.\nDirect call to Women Helpline 1091 dispatched. Urgent assistance needed!"
+            }
+            val smsResult = sosManager.sendEmergencySmsToGuardians(guardians, customMessage = alertMsg)
+            showNotice("🚨 MAXIMUM VIOLENT SHAKE DETECTED!\n• Direct Call: $helplineDesc ($contactToCall)\n• Siren Sounding\n• Audio Evidence Recording Active\n• $smsResult")
+        }
+
+        // 6. Trigger alert dialog on screen
         _showShakeAlertDialog.value = true
     }
 

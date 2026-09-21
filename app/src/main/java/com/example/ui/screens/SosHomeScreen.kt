@@ -268,6 +268,8 @@ fun SosHomeScreen(
 
     // Violent Shake / Motion Emergency Alert Dialog
     if (showShakeAlertDialog) {
+        val shakeCallNumber = if (isUnder15) "1098" else primaryEmergencyNumber
+        val shakeHelplineLabel = if (isUnder15) "Childline (1098)" else "$primaryEmergencyNumber ($primaryHelplineName)"
         AlertDialog(
             onDismissRequest = { viewModel.dismissShakeDialog() },
             icon = {
@@ -280,16 +282,19 @@ fun SosHomeScreen(
             },
             title = {
                 Text(
-                    text = strings.shakeDialogTitle,
+                    text = if (isUnder15) "🚨 CHILD SAFETY SOS: SHAKE DETECTED" else strings.shakeDialogTitle,
                     fontWeight = FontWeight.ExtraBold,
-                    fontSize = 17.sp,
+                    fontSize = 16.sp,
                     color = CrimsonPrimary
                 )
             },
             text = {
                 Column {
                     Text(
-                        text = strings.shakeDialogMessage,
+                        text = if (isUnder15)
+                            "Violent shaking detected on this phone. Automatic emergency child safety protocol activated."
+                        else
+                            strings.shakeDialogMessage,
                         fontSize = 13.sp,
                         lineHeight = 18.sp
                     )
@@ -303,7 +308,7 @@ fun SosHomeScreen(
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Icon(Icons.Default.Call, contentDescription = null, tint = CrimsonPrimary, modifier = Modifier.size(16.dp))
                                 Spacer(modifier = Modifier.width(6.dp))
-                                Text("Automated Call Dispatched ($primaryEmergencyNumber - $primaryHelplineName)", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = CrimsonPrimary)
+                                Text("Automated Call: $shakeHelplineLabel", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = CrimsonPrimary)
                             }
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Icon(Icons.Default.VolumeUp, contentDescription = null, tint = AmberWarning, modifier = Modifier.size(16.dp))
@@ -328,25 +333,24 @@ fun SosHomeScreen(
                 Button(
                     onClick = {
                         viewModel.dismissShakeDialog()
-                        viewModel.triggerEmergencyCall(primaryEmergencyNumber)
+                        viewModel.triggerEmergencyCall(shakeCallNumber)
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = if (isBelow18) AmberWarning else CrimsonPrimary)
+                    colors = ButtonDefaults.buttonColors(containerColor = if (isUnder15) AmberWarning else CrimsonPrimary)
                 ) {
                     Icon(Icons.Default.Call, contentDescription = "Call", modifier = Modifier.size(16.dp))
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(if (isBelow18) strings.callPrimaryActionChild else strings.call1091Btn, fontWeight = FontWeight.Bold)
+                    Text(if (isUnder15) "Call Childline (1098)" else strings.call1091Btn, fontWeight = FontWeight.Bold)
                 }
             },
             dismissButton = {
                 Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Button(
-                        onClick = {
-                            viewModel.dismissShakeDialog()
-                            viewModel.sendOfflineSmsWithEvidence()
-                        },
-                        colors = ButtonDefaults.buttonColors(containerColor = SuccessGreen)
-                    ) {
-                        Text("Re-send SMS", fontSize = 11.sp)
+                    if (isSirenActive) {
+                        Button(
+                            onClick = { viewModel.toggleSiren() },
+                            colors = ButtonDefaults.buttonColors(containerColor = AmberWarning)
+                        ) {
+                            Text(strings.stopSirenAction.replace("\n", " "), fontSize = 11.sp)
+                        }
                     }
                     OutlinedButton(
                         onClick = { viewModel.dismissShakeDialog() }
@@ -360,6 +364,8 @@ fun SosHomeScreen(
 
     // Scream Emergency Trigger Dialog
     if (showScreamAlertDialog) {
+        val screamCallNumber = if (isUnder15) "1098" else primaryEmergencyNumber
+        val screamHelplineLabel = if (isUnder15) "Childline (1098)" else "$primaryEmergencyNumber ($primaryHelplineName)"
         AlertDialog(
             onDismissRequest = { viewModel.dismissScreamDialog() },
             icon = {
@@ -372,32 +378,49 @@ fun SosHomeScreen(
             },
             title = {
                 Text(
-                    text = strings.screamDialogTitle,
+                    text = if (isUnder15) "🚨 CHILD SAFETY SOS: SCREAM DETECTED" else strings.screamDialogTitle,
                     fontWeight = FontWeight.ExtraBold,
-                    fontSize = 17.sp,
+                    fontSize = 16.sp,
                     color = CrimsonPrimary
                 )
             },
             text = {
                 Column {
                     Text(
-                        text = strings.screamDialogMessage,
+                        text = if (isUnder15)
+                            "Distress scream or voice detected while phone was in use or locked. Automated emergency child safety protocol dispatched."
+                        else
+                            strings.screamDialogMessage,
                         fontSize = 13.sp,
                         lineHeight = 18.sp
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     Surface(
                         color = CrimsonPrimary.copy(alpha = 0.1f),
-                        shape = RoundedCornerShape(8.dp),
+                        shape = RoundedCornerShape(10.dp),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Row(
-                            modifier = Modifier.padding(8.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(Icons.Default.Vibration, contentDescription = "Haptic", tint = CrimsonPrimary, modifier = Modifier.size(20.dp))
-                            Spacer(modifier = Modifier.width(6.dp))
-                            Text("Haptic Emergency Alarm Activated", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = CrimsonPrimary)
+                        Column(modifier = Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(Icons.Default.Call, contentDescription = null, tint = CrimsonPrimary, modifier = Modifier.size(16.dp))
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text("Automated Call: $screamHelplineLabel", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = CrimsonPrimary)
+                            }
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(Icons.Default.VolumeUp, contentDescription = null, tint = AmberWarning, modifier = Modifier.size(16.dp))
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text("Loud Police Siren Alarm Sounding", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = AmberWarning)
+                            }
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(Icons.Default.Send, contentDescription = null, tint = SuccessGreen, modifier = Modifier.size(16.dp))
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text("Offline SOS SMS Dispatched to Guardians", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = SuccessGreen)
+                            }
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(Icons.Default.Mic, contentDescription = null, tint = MagentaSecondary, modifier = Modifier.size(16.dp))
+                                Spacer(modifier = Modifier.width(6.dp))
+                                Text("Continuous Audio & Photo Evidence Saved", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = MagentaSecondary)
+                            }
                         }
                     }
                 }
@@ -406,25 +429,24 @@ fun SosHomeScreen(
                 Button(
                     onClick = {
                         viewModel.dismissScreamDialog()
-                        viewModel.triggerEmergencyCall(primaryEmergencyNumber)
+                        viewModel.triggerEmergencyCall(screamCallNumber)
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = if (isBelow18) AmberWarning else CrimsonPrimary)
+                    colors = ButtonDefaults.buttonColors(containerColor = if (isUnder15) AmberWarning else CrimsonPrimary)
                 ) {
                     Icon(Icons.Default.Call, contentDescription = "Call", modifier = Modifier.size(16.dp))
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(if (isBelow18) strings.callPrimaryActionChild else strings.call1091Btn, fontWeight = FontWeight.Bold)
+                    Text(if (isUnder15) "Call Childline (1098)" else strings.call1091Btn, fontWeight = FontWeight.Bold)
                 }
             },
             dismissButton = {
                 Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Button(
-                        onClick = {
-                            viewModel.dismissScreamDialog()
-                            viewModel.sendSosSmsToGuardians()
-                        },
-                        colors = ButtonDefaults.buttonColors(containerColor = SuccessGreen)
-                    ) {
-                        Text(strings.alertSmsBtn, fontSize = 11.sp)
+                    if (isSirenActive) {
+                        Button(
+                            onClick = { viewModel.toggleSiren() },
+                            colors = ButtonDefaults.buttonColors(containerColor = AmberWarning)
+                        ) {
+                            Text(strings.stopSirenAction.replace("\n", " "), fontSize = 11.sp)
+                        }
                     }
                     OutlinedButton(
                         onClick = { viewModel.dismissScreamDialog() }
@@ -1193,7 +1215,7 @@ fun SosHomeScreen(
                                     fontSize = 13.sp
                                 )
                                 Text(
-                                    text = if (isScreamListening) strings.screamListeningActive else strings.screamListeningOff,
+                                    text = if (isScreamListening) "Active 24/7 (Even When Closed)" else strings.screamListeningOff,
                                     fontSize = 11.sp,
                                     color = if (isScreamListening) SuccessGreen else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
                                     fontWeight = if (isScreamListening) FontWeight.Bold else FontWeight.Normal
@@ -1217,6 +1239,39 @@ fun SosHomeScreen(
                                     text = if (isScreamListening) "Active" else "Enable",
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 12.sp
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        // Out of app background shield badge & action summary
+                        Surface(
+                            shape = RoundedCornerShape(10.dp),
+                            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Column(modifier = Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(Icons.Default.Shield, contentDescription = null, tint = SuccessGreen, modifier = Modifier.size(15.dp))
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Text(
+                                        text = "24/7 Out-Of-App Background Shield Active",
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 11.sp,
+                                        color = SuccessGreen
+                                    )
+                                }
+                                Text(
+                                    text = "• Runs continuously when app is closed, minimized, or phone locked",
+                                    fontSize = 10.sp,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                                Text(
+                                    text = "• Actions: Direct Call (${if (isUnder15) "1098 Childline" else "1091 Women Helpline"}), Siren, Guardian SMS, Photo & Audio Recording",
+                                    fontSize = 10.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                         }
@@ -1251,6 +1306,18 @@ fun SosHomeScreen(
                                 }
                             }
                         }
+
+                        Spacer(modifier = Modifier.height(10.dp))
+                        OutlinedButton(
+                            onClick = { viewModel.testScreamDangerTrigger() },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(10.dp),
+                            colors = ButtonDefaults.outlinedButtonColors(contentColor = CrimsonPrimary)
+                        ) {
+                            Icon(Icons.Default.Mic, contentDescription = "Test Scream", modifier = Modifier.size(16.dp))
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text("🎙️ Simulate Distress Scream Trigger", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                        }
                     }
 
                     // Tab 1: Violent Shake
@@ -1267,7 +1334,7 @@ fun SosHomeScreen(
                                     fontSize = 13.sp
                                 )
                                 Text(
-                                    text = if (isShakeListening) strings.shakeListeningActive else strings.shakeListeningOff,
+                                    text = if (isShakeListening) "Active 24/7 (Even When Closed)" else strings.shakeListeningOff,
                                     fontSize = 11.sp,
                                     color = if (isShakeListening) SuccessGreen else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
                                     fontWeight = if (isShakeListening) FontWeight.Bold else FontWeight.Normal
@@ -1285,6 +1352,39 @@ fun SosHomeScreen(
                                     text = if (isShakeListening) "Active" else "Enable",
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 12.sp
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        // Out of app background shield badge & action summary
+                        Surface(
+                            shape = RoundedCornerShape(10.dp),
+                            color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Column(modifier = Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(Icons.Default.Shield, contentDescription = null, tint = SuccessGreen, modifier = Modifier.size(15.dp))
+                                    Spacer(modifier = Modifier.width(6.dp))
+                                    Text(
+                                        text = "24/7 Out-Of-App Background Shield Active",
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 11.sp,
+                                        color = SuccessGreen
+                                    )
+                                }
+                                Text(
+                                    text = "• Runs continuously when app is closed, minimized, or phone locked",
+                                    fontSize = 10.sp,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                                Text(
+                                    text = "• Actions: Direct Call (${if (isUnder15) "1098 Childline" else "1091 Women Helpline"}), Siren, Guardian SMS, Photo & Audio Recording",
+                                    fontSize = 10.sp,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                             }
                         }
@@ -1377,6 +1477,18 @@ fun SosHomeScreen(
                                     )
                                 }
                             }
+                        }
+
+                        Spacer(modifier = Modifier.height(10.dp))
+                        OutlinedButton(
+                            onClick = { viewModel.testShakeDangerTrigger() },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(10.dp),
+                            colors = ButtonDefaults.outlinedButtonColors(contentColor = CrimsonPrimary)
+                        ) {
+                            Icon(Icons.Default.Vibration, contentDescription = "Test Shake", modifier = Modifier.size(16.dp))
+                            Spacer(modifier = Modifier.width(6.dp))
+                            Text("🚨 Simulate Violent Shake Trigger", fontSize = 11.sp, fontWeight = FontWeight.Bold)
                         }
                     }
 
