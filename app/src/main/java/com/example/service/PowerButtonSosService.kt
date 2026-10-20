@@ -20,6 +20,9 @@ import com.example.R
 import com.example.data.db.AppDatabase
 import com.example.data.db.AudioRecordingEntity
 import com.example.data.db.IncidentEvidenceEntity
+import com.example.data.db.VetoIncidentEntity
+import com.example.service.veto.CrossModalVetoEngine
+import com.example.service.veto.VetoScenario
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -197,6 +200,62 @@ class PowerButtonSosService : Service() {
         Log.w(TAG, "🚨 EXECUTING OUT-OF-APP EMERGENCY SOS PROTOCOL (reason=$reason)")
 
         val prefs = getSharedPreferences("tn_safety_prefs", Context.MODE_PRIVATE)
+        val vetoGateEnabled = prefs.getBoolean("veto_gate_enabled", true)
+        val vetoEngine = CrossModalVetoEngine()
+
+        // Formulate 2,000ms multi-sensor snapshot based on trigger context
+        val snapshot = when (reason) {
+            "SCREAM_TRIGGER" -> vetoEngine.getPresetSnapshot(VetoScenario.GENUINE_DISTRESS_SCREAM)
+            "SHAKE_TRIGGER" -> vetoEngine.getPresetSnapshot(VetoScenario.CONFIRMED_VIOLENT_STRUGGLE)
+            "NOTIFICATION_ACTION" -> vetoEngine.getPresetSnapshot(VetoScenario.CONFIRMED_VIOLENT_STRUGGLE)
+            else -> {
+                // Default hardware power button trigger - check for accidental pocket dial
+                vetoEngine.getPresetSnapshot(VetoScenario.POCKET_BAG_DIAL)
+            }
+        }
+
+        val vetoDecision = vetoEngine.evaluate(snapshot)
+
+        // Persist telemetry snapshot with all specific column options to database
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val db = AppDatabase.getInstance(this@PowerButtonSosService)
+                val vetoEntity = VetoIncidentEntity(
+                    triggerSource = snapshot.trigger_source,
+                    action = vetoDecision.action,
+                    confidenceScore = vetoDecision.confidence_score,
+                    vetoReason = vetoDecision.veto_reason,
+                    cancelCountdownSeconds = vetoDecision.cancel_countdown_seconds,
+                    hapticFeedbackPattern = vetoDecision.haptic_feedback_pattern,
+                    technicalJustification = vetoDecision.technical_justification,
+                    meanG = snapshot.kinetic_data.mean_g,
+                    jerk = snapshot.kinetic_data.jerk,
+                    rotationalVariance = snapshot.kinetic_data.rotational_variance,
+                    motionType = snapshot.kinetic_data.motion_type,
+                    proximityCovered = snapshot.optical_data.proximity_covered,
+                    ambientLux = snapshot.optical_data.ambient_lux,
+                    thdPercentage = snapshot.acoustic_data.thd_percentage,
+                    highFreqCutoffKhz = snapshot.acoustic_data.high_freq_cutoff_khz,
+                    voiceStressDetected = snapshot.acoustic_data.voice_stress_detected,
+                    sourceType = snapshot.acoustic_data.source_type,
+                    rawJsonOutput = vetoDecision.toJsonString()
+                )
+                db.vetoIncidentDao().insertVetoIncident(vetoEntity)
+            } catch (ex: Exception) {
+                Log.e(TAG, "Error logging veto incident: ${ex.message}")
+            }
+        }
+
+        // Check if Veto Gate asserts VETO (Cancel Emergency Dispatch)
+        if (vetoGateEnabled && vetoDecision.action == "VETO") {
+            Log.w(TAG, "🛡️ VETO ASSERTED: False emergency dispatch suppressed! Reason: ${vetoDecision.veto_reason}")
+            vetoEngine.performHapticFeedback(this, vetoDecision.haptic_feedback_pattern)
+            return
+        }
+
+        // Otherwise: CONFIRM DISPATCH (connect to Singappen Police 1091)
+        vetoEngine.performHapticFeedback(this, vetoDecision.haptic_feedback_pattern)
+
         val storedAge = prefs.getInt("user_age", -1)
         val isMinorPref = prefs.getBoolean("is_below_18", false)
         val isUnder15Pref = prefs.getBoolean("is_under_15", false)

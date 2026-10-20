@@ -102,6 +102,7 @@ import com.example.data.db.AudioRecordingEntity
 import com.example.data.model.AppLanguage
 import com.example.data.model.AppStrings
 import com.example.service.ShakeSensitivity
+import com.example.ui.components.CrossModalVetoSection
 import com.example.ui.components.PanicButton
 import com.example.ui.components.PermissionStatusCard
 import com.example.ui.theme.AmberWarning
@@ -149,6 +150,14 @@ fun SosHomeScreen(
     val isPowerButtonTriggerOnOffActive by viewModel.isPowerButtonTriggerOnOffActive.collectAsStateWithLifecycle()
     val primaryEmergencyNumber by viewModel.primaryEmergencyNumber.collectAsStateWithLifecycle()
     val primaryHelplineName by viewModel.primaryHelplineName.collectAsStateWithLifecycle()
+
+    val isVetoGateActive by viewModel.isVetoGateActive.collectAsStateWithLifecycle()
+    val latestVetoDecision by viewModel.latestVetoDecision.collectAsStateWithLifecycle()
+    val latestTelemetryInput by viewModel.latestTelemetryInput.collectAsStateWithLifecycle()
+    val vetoIncidents by viewModel.vetoIncidents.collectAsStateWithLifecycle()
+    val vetoCount by viewModel.vetoCount.collectAsStateWithLifecycle()
+    val dispatchCount by viewModel.dispatchCount.collectAsStateWithLifecycle()
+    val vetoFilterTab by viewModel.vetoFilterTab.collectAsStateWithLifecycle()
 
     var sensorTabSelected by remember { mutableIntStateOf(0) }
 
@@ -1187,12 +1196,27 @@ fun SosHomeScreen(
                             onClick = { sensorTabSelected = 2 },
                             text = {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Icon(Icons.Default.ElectricBolt, contentDescription = null, modifier = Modifier.size(16.dp))
-                                    Spacer(modifier = Modifier.width(4.dp))
+                                    Icon(Icons.Default.ElectricBolt, contentDescription = null, modifier = Modifier.size(15.dp))
+                                    Spacer(modifier = Modifier.width(3.dp))
                                     Text(
-                                        text = if (currentLanguage == AppLanguage.TAMIL) "பவர் பட்டன் 2x" else "Power 2x",
+                                        text = if (currentLanguage == AppLanguage.TAMIL) "பவர் 2x" else "Power",
                                         fontWeight = FontWeight.Bold,
-                                        fontSize = 11.sp
+                                        fontSize = 10.5.sp
+                                    )
+                                }
+                            }
+                        )
+                        Tab(
+                            selected = sensorTabSelected == 3,
+                            onClick = { sensorTabSelected = 3 },
+                            text = {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(Icons.Default.Shield, contentDescription = null, modifier = Modifier.size(15.dp))
+                                    Spacer(modifier = Modifier.width(3.dp))
+                                    Text(
+                                        text = if (currentLanguage == AppLanguage.TAMIL) "வீட்டோ கேட்" else "Veto Gate",
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 10.5.sp
                                     )
                                 }
                             }
@@ -1606,6 +1630,21 @@ fun SosHomeScreen(
                                 }
                             }
                         }
+                    }
+
+                    // Tab 3: Cross-Modal SOS Veto Engine
+                    if (sensorTabSelected == 3) {
+                        CrossModalVetoSection(
+                            viewModel = viewModel,
+                            isVetoGateActive = isVetoGateActive,
+                            latestDecision = latestVetoDecision,
+                            latestTelemetry = latestTelemetryInput,
+                            vetoIncidents = vetoIncidents,
+                            vetoCount = vetoCount,
+                            dispatchCount = dispatchCount,
+                            filterTab = vetoFilterTab,
+                            isTamil = currentLanguage == AppLanguage.TAMIL
+                        )
                     }
                 }
             }

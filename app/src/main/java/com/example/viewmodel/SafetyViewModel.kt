@@ -17,9 +17,15 @@ import com.example.data.db.AppDatabase
 import com.example.data.db.AudioRecordingEntity
 import com.example.data.db.GuardianEntity
 import com.example.data.db.IncidentEvidenceEntity
+import com.example.data.db.VetoIncidentEntity
 import com.example.data.model.AppLanguage
 import com.example.data.model.PoliceStation
 import com.example.data.model.PoliceStationProvider
+import com.example.data.veto.AcousticData
+import com.example.data.veto.KineticData
+import com.example.data.veto.OpticalData
+import com.example.data.veto.VetoDecisionResult
+import com.example.data.veto.VetoTelemetryInput
 import com.example.service.AudioRecorder
 import com.example.service.CameraCaptureManager
 import com.example.service.PowerButtonEmergencyDetector
@@ -31,6 +37,8 @@ import com.example.service.SirenPlayer
 import com.example.service.SosManager
 import com.example.service.SpeechToTextManager
 import com.example.service.TextToSpeechManager
+import com.example.service.veto.CrossModalVetoEngine
+import com.example.service.veto.VetoScenario
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -49,6 +57,8 @@ class SafetyViewModel(application: Application) : AndroidViewModel(application) 
     private val guardianDao = db.guardianDao()
     private val audioDao = db.audioRecordingDao()
     private val evidenceDao = db.evidenceDao()
+    private val vetoDao = db.vetoIncidentDao()
+    private val vetoEngine = CrossModalVetoEngine()
 
     private val prefs = application.getSharedPreferences("tn_safety_prefs", Context.MODE_PRIVATE)
 
@@ -197,6 +207,28 @@ class SafetyViewModel(application: Application) : AndroidViewModel(application) 
     private val _showShakeAlertDialog = MutableStateFlow(false)
     val showShakeAlertDialog: StateFlow<Boolean> = _showShakeAlertDialog.asStateFlow()
 
+    // Cross-Modal SOS Veto Engine State & DAO bindings
+    val vetoIncidents: StateFlow<List<VetoIncidentEntity>> = vetoDao.getAllVetoIncidents()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    val vetoCount: StateFlow<Int> = vetoDao.getVetoCount()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
+
+    val dispatchCount: StateFlow<Int> = vetoDao.getDispatchCount()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), 0)
+
+    private val _isVetoGateActive = MutableStateFlow(prefs.getBoolean("veto_gate_enabled", true))
+    val isVetoGateActive: StateFlow<Boolean> = _isVetoGateActive.asStateFlow()
+
+    private val _latestVetoDecision = MutableStateFlow<VetoDecisionResult?>(null)
+    val latestVetoDecision: StateFlow<VetoDecisionResult?> = _latestVetoDecision.asStateFlow()
+
+    private val _latestTelemetryInput = MutableStateFlow<VetoTelemetryInput?>(null)
+    val latestTelemetryInput: StateFlow<VetoTelemetryInput?> = _latestTelemetryInput.asStateFlow()
+
+    private val _vetoFilterTab = MutableStateFlow(0) // 0: All, 1: Vetoed Only, 2: Dispatched Only
+    val vetoFilterTab: StateFlow<Int> = _vetoFilterTab.asStateFlow()
+
     init {
         screamDetector.setScreamListener {
             onScreamOrDistressDetected()
@@ -232,6 +264,10 @@ class SafetyViewModel(application: Application) : AndroidViewModel(application) 
                 PowerButtonSosService.start(application)
             } catch (_: Exception) {}
         }
+
+        val defaultSnapshot = vetoEngine.getPresetSnapshot(VetoScenario.POCKET_BAG_DIAL)
+        _latestTelemetryInput.value = defaultSnapshot
+        _latestVetoDecision.value = vetoEngine.evaluate(defaultSnapshot)
     }
 
     private fun isAudioPermissionGranted(): Boolean {
@@ -930,6 +966,84 @@ class SafetyViewModel(application: Application) : AndroidViewModel(application) 
 
     fun dismissPowerButtonDangerDialog() {
         _showPowerButtonDangerDialog.value = false
+    }
+
+    // --- CROSS-MODAL SOS VETO ENGINE METHODS ---
+
+    fun toggleVetoGate() {
+        val next = !_isVetoGateActive.value
+        _isVetoGateActive.value = next
+        prefs.edit().putBoolean("veto_gate_enabled", next).apply()
+        PowerButtonSosService.updateConfig(getApplication())
+        showNotice(if (next) "🛡️ Cross-Modal SOS Veto Gate: ACTIVE (False alarms auto-vetoed)" else "⚠️ Veto Gate Paused (Direct unverified dispatch)")
+    }
+
+    fun setVetoFilterTab(tabIndex: Int) {
+        _vetoFilterTab.value = tabIndex
+    }
+
+    fun clearAllVetoLogs() {
+        viewModelScope.launch {
+            vetoDao.clearAllVetoIncidents()
+            showNotice("All Veto Engine incident logs cleared.")
+        }
+    }
+
+    fun evaluateCustomSnapshot(snapshot: VetoTelemetryInput) {
+        val decision = vetoEngine.evaluate(snapshot)
+        _latestTelemetryInput.value = snapshot
+        _latestVetoDecision.value = decision
+
+        viewModelScope.launch {
+            val entity = VetoIncidentEntity(
+                triggerSource = snapshot.trigger_source,
+                action = decision.action,
+                confidenceScore = decision.confidence_score,
+                vetoReason = decision.veto_reason,
+                cancelCountdownSeconds = decision.cancel_countdown_seconds,
+                hapticFeedbackPattern = decision.haptic_feedback_pattern,
+                technicalJustification = decision.technical_justification,
+                meanG = snapshot.kinetic_data.mean_g,
+                jerk = snapshot.kinetic_data.jerk,
+                rotationalVariance = snapshot.kinetic_data.rotational_variance,
+                motionType = snapshot.kinetic_data.motion_type,
+                proximityCovered = snapshot.optical_data.proximity_covered,
+                ambientLux = snapshot.optical_data.ambient_lux,
+                thdPercentage = snapshot.acoustic_data.thd_percentage,
+                highFreqCutoffKhz = snapshot.acoustic_data.high_freq_cutoff_khz,
+                voiceStressDetected = snapshot.acoustic_data.voice_stress_detected,
+                sourceType = snapshot.acoustic_data.source_type,
+                rawJsonOutput = decision.toJsonString()
+            )
+            vetoDao.insertVetoIncident(entity)
+        }
+
+        vetoEngine.performHapticFeedback(getApplication(), decision.haptic_feedback_pattern)
+        if (decision.action == "VETO") {
+            showNotice("🛡️ VETO ASSERTED! False alarm (${decision.veto_reason}) prevented. Call to 1091 suppressed.")
+        } else {
+            showNotice("🚨 DISPATCH CONFIRMED! Emergency verified with ${String.format(java.util.Locale.US, "%.0f%%", decision.confidence_score * 100)} confidence.")
+        }
+    }
+
+    fun simulatePocketBagDialVeto() {
+        val snapshot = vetoEngine.getPresetSnapshot(VetoScenario.POCKET_BAG_DIAL)
+        evaluateCustomSnapshot(snapshot)
+    }
+
+    fun simulateMediaTvPlaybackVeto() {
+        val snapshot = vetoEngine.getPresetSnapshot(VetoScenario.MEDIA_TV_PLAYBACK)
+        evaluateCustomSnapshot(snapshot)
+    }
+
+    fun simulateConfirmedAssaultDispatch() {
+        val snapshot = vetoEngine.getPresetSnapshot(VetoScenario.CONFIRMED_VIOLENT_STRUGGLE)
+        evaluateCustomSnapshot(snapshot)
+    }
+
+    fun simulateGenuineScreamDispatch() {
+        val snapshot = vetoEngine.getPresetSnapshot(VetoScenario.GENUINE_DISTRESS_SCREAM)
+        evaluateCustomSnapshot(snapshot)
     }
 
     override fun onCleared() {

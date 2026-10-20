@@ -6,14 +6,15 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(
-    entities = [GuardianEntity::class, AudioRecordingEntity::class, IncidentEvidenceEntity::class],
-    version = 2,
+    entities = [GuardianEntity::class, AudioRecordingEntity::class, IncidentEvidenceEntity::class, VetoIncidentEntity::class],
+    version = 3,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun guardianDao(): GuardianDao
     abstract fun audioRecordingDao(): AudioRecordingDao
     abstract fun evidenceDao(): IncidentEvidenceDao
+    abstract fun vetoIncidentDao(): VetoIncidentDao
 
     companion object {
         @Volatile
