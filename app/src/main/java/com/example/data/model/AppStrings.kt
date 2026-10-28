@@ -22,6 +22,7 @@ object AppStrings {
         val tabAwps: String
         val tabGuardians: String
         val tabGuide: String
+        val tabVeto: String
 
         // SOS Screen
         val sosBannerTag: String
@@ -187,6 +188,7 @@ object AppStrings {
         override val tabAwps = "AWPS Police"
         override val tabGuardians = "Guardians"
         override val tabGuide = "Guide"
+        override val tabVeto = "Veto Gate"
 
         override val sosBannerTag = "SENTINEL AI DIGITAL GUARD"
         override val sosBannerTitle = "SENTINEL AI Women's Digital Safety Guard"
@@ -344,6 +346,7 @@ object AppStrings {
         override val tabAwps = "மகளிர் காவல்"
         override val tabGuardians = "பாதுகாவலர்"
         override val tabGuide = "வழிகாட்டி"
+        override val tabVeto = "வீட்டோ கேட்"
 
         override val sosBannerTag = "சென்டினல் AI டிஜிட்டல் கார்டு"
         override val sosBannerTitle = "சென்டினல் AI பெண்கள் டிஜிட்டல் பாதுகாப்பு கார்டு"

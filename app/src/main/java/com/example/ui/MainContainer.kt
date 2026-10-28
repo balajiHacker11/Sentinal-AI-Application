@@ -27,6 +27,7 @@ import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.LocalPolice
 import androidx.compose.material.icons.filled.People
+import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -71,9 +72,11 @@ import com.example.ui.screens.AiAssistantScreen
 import com.example.ui.screens.GuardiansScreen
 import com.example.ui.screens.PoliceStationsScreen
 import com.example.ui.screens.SosHomeScreen
+import com.example.ui.screens.VetoEngineScreen
 import com.example.ui.theme.AmberWarning
 import com.example.ui.theme.CrimsonPrimary
 import com.example.ui.theme.MagentaSecondary
+import com.example.ui.theme.SuccessGreen
 import com.example.viewmodel.SafetyViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -297,8 +300,21 @@ fun MainContainer(
                 NavigationBarItem(
                     selected = selectedTab == 2,
                     onClick = { selectedTab = 2 },
+                    icon = { Icon(Icons.Default.Shield, contentDescription = strings.tabVeto) },
+                    label = { Text(strings.tabVeto, fontSize = 10.sp, fontWeight = FontWeight.Bold) },
+                    colors = NavigationBarItemDefaults.colors(
+                        selectedIconColor = SuccessGreen,
+                        selectedTextColor = SuccessGreen,
+                        indicatorColor = SuccessGreen.copy(alpha = 0.15f)
+                    ),
+                    modifier = Modifier.testTag("nav_tab_veto")
+                )
+
+                NavigationBarItem(
+                    selected = selectedTab == 3,
+                    onClick = { selectedTab = 3 },
                     icon = { Icon(Icons.Default.LocalPolice, contentDescription = strings.tabAwps) },
-                    label = { Text(strings.tabAwps, fontSize = 11.sp, fontWeight = FontWeight.Bold) },
+                    label = { Text(strings.tabAwps, fontSize = 10.sp, fontWeight = FontWeight.Bold) },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = CrimsonPrimary,
                         selectedTextColor = CrimsonPrimary,
@@ -308,10 +324,10 @@ fun MainContainer(
                 )
 
                 NavigationBarItem(
-                    selected = selectedTab == 3,
-                    onClick = { selectedTab = 3 },
+                    selected = selectedTab == 4,
+                    onClick = { selectedTab = 4 },
                     icon = { Icon(Icons.Default.People, contentDescription = strings.tabGuardians) },
-                    label = { Text(strings.tabGuardians, fontSize = 11.sp, fontWeight = FontWeight.Bold) },
+                    label = { Text(strings.tabGuardians, fontSize = 10.sp, fontWeight = FontWeight.Bold) },
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = CrimsonPrimary,
                         selectedTextColor = CrimsonPrimary,
@@ -377,13 +393,16 @@ fun MainContainer(
                     audioRecordings = audioRecordings,
                     playingAudioPath = playingAudioPath
                 )
-                2 -> PoliceStationsScreen(
+                2 -> VetoEngineScreen(
+                    viewModel = viewModel
+                )
+                3 -> PoliceStationsScreen(
                     viewModel = viewModel,
                     searchQuery = stationSearchQuery,
                     selectedDistrict = selectedDistrict,
                     filteredStations = filteredStations
                 )
-                3 -> GuardiansScreen(
+                4 -> GuardiansScreen(
                     viewModel = viewModel,
                     guardians = guardians
                 )
