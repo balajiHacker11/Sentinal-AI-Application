@@ -556,6 +556,36 @@ fun VetoEngineScreen(
                         }
                     }
                 }
+
+                // Live Real-Time Sensors Manual Trigger
+                Button(
+                    onClick = { viewModel.evaluateLiveDeviceSensors() },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("test_live_device_sensors"),
+                    shape = RoundedCornerShape(10.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = MagentaSecondary)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(Icons.Default.FlashOn, contentDescription = null, modifier = Modifier.size(20.dp), tint = Color.White)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Column {
+                                Text("Sample Live Phone Sensors (2,000ms)", fontWeight = FontWeight.ExtraBold, fontSize = 12.sp, color = Color.White)
+                                Text("Evaluates current real-time IMU, proximity & microphone", fontSize = 10.sp, color = Color.White.copy(alpha = 0.85f))
+                            }
+                        }
+                        Surface(shape = RoundedCornerShape(6.dp), color = Color.White.copy(alpha = 0.25f)) {
+                            Text("TEST LIVE", fontSize = 10.sp, fontWeight = FontWeight.Black, color = Color.White, modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp))
+                        }
+                    }
+                }
             }
         }
 

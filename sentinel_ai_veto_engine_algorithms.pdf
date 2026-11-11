@@ -1,0 +1,1248 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R 5 0 R 7 0 R] /Count 3 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 4 0 R /Resources << /Font << /F1 9 0 R /F2 10 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 5259 >>
+stream
+q
+0.12 0.16 0.22 rg
+0 811.89 595.28 30 re f
+1 1 1 rg
+BT
+/F2 9 Tf
+50 821.89 Td
+(SENTINEL AI  |  TECHNICAL & ALGORITHMIC SPECIFICATION REPORT) Tj
+ET
+Q
+q
+0.6 0.6 0.6 RG 0.5 w
+50 40 m 545.28 40 l S
+0.4 0.4 0.4 rg
+BT
+/F1 8 Tf
+50 28 Td
+(Confidential & Proprietary  -  Tamil Nadu Police Control Room 1091 / Singappen Task Force) Tj
+ET
+Q
+q
+0.85 0.12 0.25 rg
+50 758.89 5 32 re f
+0.1 0.12 0.18 rg
+BT
+/F2 18 Tf
+62 766.89 Td
+(SENTINEL AI: DETECTION ALGORITHMS BLUEPRINT) Tj
+ET
+Q
+q
+0.4 0.45 0.55 rg
+BT
+/F1 9.5 Tf
+62 750.89 Td
+(Deterministic Multi-Modal Sensor Fusion & Veto Architecture Specification) Tj
+ET
+Q
+q
+0.4 0.45 0.55 rg
+BT
+/F2 8.5 Tf
+50.0 730.89 Td
+(AUTHOR: Principal Mobile Systems Architect & Signal Processing Team) Tj
+ET
+Q
+q
+0.4 0.45 0.55 rg
+BT
+/F1 8.5 Tf
+50.0 717.67 Td
+(INTEGRATION: Singappen Women Safety Task Force / Tamil Nadu State Police Control Room 1091) Tj
+ET
+Q
+q
+0.94 0.96 0.98 rg
+50 682.4499999999999 495.28 20 re f
+0.85 0.12 0.25 rg
+50 682.4499999999999 3 20 re f
+0.12 0.16 0.24 rg
+BT
+/F2 11 Tf
+58 688.4499999999999 Td
+(1. EXECUTIVE SUMMARY & PROBLEM CONTEXT) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 670.4499999999999 Td
+(Traditional emergency response systems \(such as the default Android 5-power-button SOS or standalone) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 658.5699999999999 Td
+(acoustic scream monitors\) suffer from catastrophic false-positive rates exceeding 90%. Overwhelming) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 646.6899999999999 Td
+(volumes of accidental pocket dials \(caused by key compression inside bags or tight denim\) and false) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 634.81 Td
+(alarms triggered by entertainment audio \(screams in television movies or video games\) frequently) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 622.93 Td
+(overwhelm police dispatchers.) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 609.05 Td
+(The Sentinel AI 'Cross-Modal SOS Veto Engine' introduces an intelligent, deterministic software gate.) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 597.17 Td
+(Rather than continuously draining battery life by sampling 24/7, the system remains dormant until an) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 585.29 Td
+(interrupt occurs \(such as 5 rapid power-button presses or an amplitude spike\). It then captures a) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 573.41 Td
+(synchronized 2,000-millisecond multi-sensor snapshot across three physical modalities, applies) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 561.53 Td
+(deterministic signal processing equations, and evaluates whether to ASSERT VETO \(cancel dispatch\) or) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 549.65 Td
+(CONFIRM DISPATCH \(connect directly to Helpline 1091\).) Tj
+ET
+Q
+q
+0.94 0.96 0.98 rg
+50 519.77 495.28 20 re f
+0.85 0.12 0.25 rg
+50 519.77 3 20 re f
+0.12 0.16 0.24 rg
+BT
+/F2 11 Tf
+58 525.77 Td
+(2. THE THREE SENSOR MODALITIES \(PHYSICAL REASONING\)) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 507.77 Td
+(To guarantee defensibility under real-world physical constraints and patent scrutiny, the engine relies) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 495.89 Td
+(on three distinct physical sensor domains:) Tj
+ET
+Q
+q
+0.99 0.95 0.96 rg
+50 384.01 495.28 98 re f
+0.85 0.12 0.25 RG 1 w
+50 384.01 495.28 98 re S
+0.85 0.12 0.25 rg
+50 384.01 4 98 re f
+0.85 0.12 0.25 rg
+BT
+/F2 9.5 Tf
+60 468.01 Td
+(Modality 1: Kinetic Inertial Motion \(Accelerometer + Gyroscope\)) Tj
+ET
+Q
+q
+0.15 0.18 0.22 rg
+BT
+/F1 8.5 Tf
+62 456.01 Td
+(- Measures physical force, impact dynamics, and spatial rotational variance.) Tj
+ET
+Q
+q
+0.15 0.18 0.22 rg
+BT
+/F1 8.5 Tf
+62 444.01 Td
+(- Distinguishes smooth walking rhythm or table rest from violent physical struggle.) Tj
+ET
+Q
+q
+0.15 0.18 0.22 rg
+BT
+/F1 8.5 Tf
+62 432.01 Td
+(- Key Metric: Vector Jerk J = da/dt in g/s and angular variance sigma_omega^2 in rad/s^2.) Tj
+ET
+Q
+q
+0.95 0.98 0.96 rg
+50 278.01 495.28 98 re f
+0.18 0.65 0.42 RG 1 w
+50 278.01 495.28 98 re S
+0.18 0.65 0.42 rg
+50 278.01 4 98 re f
+0.18 0.65 0.42 rg
+BT
+/F2 9.5 Tf
+60 362.01 Td
+(Modality 2: Optical Exposure Index \(Proximity Sensor + Ambient Photometer\)) Tj
+ET
+Q
+q
+0.15 0.18 0.22 rg
+BT
+/F1 8.5 Tf
+62 350.01 Td
+(- Identifies containment context: open atmosphere vs. trapped within dark enclosure.) Tj
+ET
+Q
+q
+0.15 0.18 0.22 rg
+BT
+/F1 8.5 Tf
+62 338.01 Td
+(- Evaluates physical proximity distance \(binary covered vs. far\) and ambient lux levels.) Tj
+ET
+Q
+q
+0.15 0.18 0.22 rg
+BT
+/F1 8.5 Tf
+62 326.01 Td
+(- Metric: O_containment = True when proximity is blocked and illuminance < 5.0 lux.) Tj
+ET
+Q
+q
+0.98 0.95 0.99 rg
+50 172.01 495.28 98 re f
+0.58 0.2 0.68 RG 1 w
+50 172.01 495.28 98 re S
+0.58 0.2 0.68 rg
+50 172.01 4 98 re f
+0.58 0.2 0.68 rg
+BT
+/F2 9.5 Tf
+60 256.01 Td
+(Modality 3: Acoustic Playback & Harmonic Filter \(16-bit PCM @ 16 kHz\)) Tj
+ET
+Q
+q
+0.15 0.18 0.22 rg
+BT
+/F1 8.5 Tf
+62 244.01 Td
+(- Analyzes spectral harmonic dispersion to eliminate television and radio playback.) Tj
+ET
+Q
+q
+0.15 0.18 0.22 rg
+BT
+/F1 8.5 Tf
+62 232.01 Td
+(- Leverages lossy compression rolloff: MP3/AAC codecs cut audio abruptly <= 15.0 kHz.) Tj
+ET
+Q
+q
+0.15 0.18 0.22 rg
+BT
+/F1 8.5 Tf
+62 220.01 Td
+(- Live biological vocal tracts produce wideband distress harmonics extending > 16.0 kHz.) Tj
+ET
+Q
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 6 0 R /Resources << /Font << /F1 9 0 R /F2 10 0 R >> >> >>
+endobj
+6 0 obj
+<< /Length 10796 >>
+stream
+q
+0.12 0.16 0.22 rg
+0 811.89 595.28 30 re f
+1 1 1 rg
+BT
+/F2 9 Tf
+50 821.89 Td
+(SENTINEL AI  |  TECHNICAL & ALGORITHMIC SPECIFICATION REPORT) Tj
+ET
+Q
+q
+0.6 0.6 0.6 RG 0.5 w
+50 40 m 545.28 40 l S
+0.4 0.4 0.4 rg
+BT
+/F1 8 Tf
+50 28 Td
+(Confidential & Proprietary  -  Tamil Nadu Police Control Room 1091 / Singappen Task Force) Tj
+ET
+Q
+q
+0.94 0.96 0.98 rg
+50 770.89 495.28 20 re f
+0.85 0.12 0.25 rg
+50 770.89 3 20 re f
+0.12 0.16 0.24 rg
+BT
+/F2 11 Tf
+58 776.89 Td
+(3. CONCRETE MATHEMATICAL FORMULATIONS) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 758.89 Td
+(Every decision is mathematically computed in real time inside the 2,000ms capture window without remote) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 747.01 Td
+(cloud calls:) Tj
+ET
+Q
+q
+0.2 0.3 0.45 rg
+BT
+/F2 10 Tf
+50 727.13 Td
+(A. Kinetic State Metric \(K\) & 3D Jerk Calculus) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 714.13 Td
+(Static acceleration magnitude \(mean_g\) cannot distinguish aggressive physical assault from someone) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 702.25 Td
+(jumping or running down stairs. Sentinel AI computes the Jerk Vector \(J\), representing the first) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 690.37 Td
+(time-derivative of 3-axis acceleration:) Tj
+ET
+Q
+q
+0.1 0.2 0.4 rg
+BT
+/F2 9.0 Tf
+65.0 676.49 Td
+(Formula: J\(t\) = d\(a\(t\)\)/dt = lim [a\(t + dt\) - a\(t\)] / dt) Tj
+ET
+Q
+q
+0.1 0.2 0.4 rg
+BT
+/F2 9.0 Tf
+65.0 662.61 Td
+(Euclidean 3-Axis Jerk Magnitude: |J| = sqrt\( \(dAx/dt\)^2 + \(dAy/dt\)^2 + \(dAz/dt\)^2 \)) Tj
+ET
+Q
+q
+0.1 0.2 0.4 rg
+BT
+/F2 9.0 Tf
+65.0 648.73 Td
+(Rotational Variance across N Gyroscope samples: sigma_omega^2 = \(1/N\) * sum\( \(||omega_i|| -) Tj
+ET
+Q
+q
+0.1 0.2 0.4 rg
+BT
+/F2 9.0 Tf
+65.0 636.85 Td
+(mean_omega\)^2 \)) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 622.97 Td
+(- Resting Table Condition: |J| < 0.20 g/s and mean_g ~ 1.0 g.) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 609.09 Td
+(- Walking Rhythm: 0.20 g/s <= |J| < 2.0 g/s and mean_g < 1.5 g.) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 595.21 Td
+(- Violent Physical Struggle / Blows: |J| > 3.0 g/s and rotational variance > 3.5 rad/s^2.) Tj
+ET
+Q
+q
+0.2 0.3 0.45 rg
+BT
+/F2 10 Tf
+50 575.33 Td
+(B. Optical Containment Index \(O\)) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 562.33 Td
+(Quantifies probability that the mobile device is trapped inside clothing or bag fabric:) Tj
+ET
+Q
+q
+0.1 0.2 0.4 rg
+BT
+/F2 9.0 Tf
+65.0 548.45 Td
+(O_index = 1.0 if \(Prox == Covered and Lux < 5.0\) else \(0.0 if Lux >= 20.0 else \(20 - Lux\)/20\)) Tj
+ET
+Q
+q
+0.2 0.3 0.45 rg
+BT
+/F2 10 Tf
+50 528.57 Td
+(C. Acoustic Spectral Rolloff & Total Harmonic Distortion \(THD\)) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 515.57 Td
+(The audio engine executes FFT spectrum analysis over 16-bit PCM streaming buffers to inspect harmonic) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 503.69000000000005 Td
+(decay:) Tj
+ET
+Q
+q
+0.1 0.2 0.4 rg
+BT
+/F2 9.0 Tf
+65.0 489.81000000000006 Td
+(THD Equation: THD\(%\) = \( sqrt\( V2^2 + V3^2 + V4^2 + ... \) / V1 \) * 100) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 475.93000000000006 Td
+(- Codec Low-Pass Rolloff: Digital television, streaming video, and loudspeaker transducers exhibit steep) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 464.05000000000007 Td
+(low-pass filtering with cutoff frequencies fc <= 15.0 kHz.) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 450.1700000000001 Td
+(- Biological Human Distress Scream: Authentic human screams produce high-energy acoustic turbulence) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 438.2900000000001 Td
+(across the vocal folds with spectral bandwidth extending well beyond 16.0 kHz up to 20.0 kHz.) Tj
+ET
+Q
+q
+0.2 0.3 0.45 rg
+BT
+/F2 10 Tf
+50 418.4100000000001 Td
+(D. Cross-Modal Confidence Score \(CMCS\)) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 405.4100000000001 Td
+(When telemetry inputs fall into intermediate or ambiguous zones, the engine applies weighted fusion:) Tj
+ET
+Q
+q
+0.85 0.12 0.25 rg
+BT
+/F2 9.0 Tf
+65.0 391.5300000000001 Td
+(CMCS = \(w_k * K_score\) + \(w_o * O_score\) + \(w_a * A_score\)) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 377.6500000000001 Td
+(Where: w_k = 0.45 \(Kinetic\), w_o = 0.25 \(Optical\), w_a = 0.30 \(Acoustic\). Threshold CMCS >= 0.40) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 365.7700000000001 Td
+(dispatches emergency; < 0.40 asserts veto.) Tj
+ET
+Q
+q
+0.94 0.96 0.98 rg
+50 335.8900000000001 495.28 20 re f
+0.85 0.12 0.25 rg
+50 335.8900000000001 3 20 re f
+0.12 0.16 0.24 rg
+BT
+/F2 11 Tf
+58 341.8900000000001 Td
+(4. COMPREHENSIVE SENSOR TELEMETRY COLUMNS SCHEMA) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 323.8900000000001 Td
+(The system exposes deterministic column values across every evaluation snapshot, stored in Room SQLite:) Tj
+ET
+Q
+q
+0.15 0.20 0.28 rg
+50 294.0100000000001 495.28 16 re f
+1 1 1 rg
+BT
+/F2 8.0 Tf
+55.0 299.0100000000001 Td
+(Domain) Tj
+-55.0 -299.0100000000001 Td
+125.0 299.0100000000001 Td
+(Column Name) Tj
+-125.0 -299.0100000000001 Td
+235.0 299.0100000000001 Td
+(Data Type) Tj
+-235.0 -299.0100000000001 Td
+300.0 299.0100000000001 Td
+(Nominal Range) Tj
+-300.0 -299.0100000000001 Td
+380.0 299.0100000000001 Td
+(Physical Significance) Tj
+-380.0 -299.0100000000001 Td
+ET
+Q
+q
+0.97 0.98 0.99 rg
+50 278.0100000000001 495.28 16 re f
+0.85 0.88 0.92 RG 0.5 w
+50 278.0100000000001 m 545.28 278.0100000000001 l S
+0.15 0.18 0.22 rg
+BT
+/F1 8.0 Tf
+55.0 283.0100000000001 Td
+(Kinetic) Tj
+-55.0 -283.0100000000001 Td
+125.0 283.0100000000001 Td
+(mean_g) Tj
+-125.0 -283.0100000000001 Td
+235.0 283.0100000000001 Td
+(Float \(g\)) Tj
+-235.0 -283.0100000000001 Td
+300.0 283.0100000000001 Td
+(0.8 - 3.5 g) Tj
+-300.0 -283.0100000000001 Td
+380.0 283.0100000000001 Td
+(Average gravitational acceleration vector) Tj
+-380.0 -283.0100000000001 Td
+ET
+Q
+q
+1.0 1.0 1.0 rg
+50 262.0100000000001 495.28 16 re f
+0.85 0.88 0.92 RG 0.5 w
+50 262.0100000000001 m 545.28 262.0100000000001 l S
+0.15 0.18 0.22 rg
+BT
+/F1 8.0 Tf
+55.0 267.0100000000001 Td
+(Kinetic) Tj
+-55.0 -267.0100000000001 Td
+125.0 267.0100000000001 Td
+(jerk) Tj
+-125.0 -267.0100000000001 Td
+235.0 267.0100000000001 Td
+(Float \(g/s\)) Tj
+-235.0 -267.0100000000001 Td
+300.0 267.0100000000001 Td
+(0.0 - 8.0 g/s) Tj
+-300.0 -267.0100000000001 Td
+380.0 267.0100000000001 Td
+(Rate of change of force; struggle intensity) Tj
+-380.0 -267.0100000000001 Td
+ET
+Q
+q
+0.97 0.98 0.99 rg
+50 246.0100000000001 495.28 16 re f
+0.85 0.88 0.92 RG 0.5 w
+50 246.0100000000001 m 545.28 246.0100000000001 l S
+0.15 0.18 0.22 rg
+BT
+/F1 8.0 Tf
+55.0 251.0100000000001 Td
+(Kinetic) Tj
+-55.0 -251.0100000000001 Td
+125.0 251.0100000000001 Td
+(rotational_var) Tj
+-125.0 -251.0100000000001 Td
+235.0 251.0100000000001 Td
+(Float \(rad/s^2\)) Tj
+-235.0 -251.0100000000001 Td
+300.0 251.0100000000001 Td
+(0.0 - 10.0) Tj
+-300.0 -251.0100000000001 Td
+380.0 251.0100000000001 Td
+(Gyro variance; erratic fighting tumbling) Tj
+-380.0 -251.0100000000001 Td
+ET
+Q
+q
+1.0 1.0 1.0 rg
+50 230.0100000000001 495.28 16 re f
+0.85 0.88 0.92 RG 0.5 w
+50 230.0100000000001 m 545.28 230.0100000000001 l S
+0.15 0.18 0.22 rg
+BT
+/F1 8.0 Tf
+55.0 235.0100000000001 Td
+(Kinetic) Tj
+-55.0 -235.0100000000001 Td
+125.0 235.0100000000001 Td
+(motion_type) Tj
+-125.0 -235.0100000000001 Td
+235.0 235.0100000000001 Td
+(String) Tj
+-235.0 -235.0100000000001 Td
+300.0 235.0100000000001 Td
+(Enum) Tj
+-300.0 -235.0100000000001 Td
+380.0 235.0100000000001 Td
+(STATIONARY, RHYTHMIC_WALKING, VIOLENT_STRUGGLE) Tj
+-380.0 -235.0100000000001 Td
+ET
+Q
+q
+0.97 0.98 0.99 rg
+50 214.0100000000001 495.28 16 re f
+0.85 0.88 0.92 RG 0.5 w
+50 214.0100000000001 m 545.28 214.0100000000001 l S
+0.15 0.18 0.22 rg
+BT
+/F1 8.0 Tf
+55.0 219.0100000000001 Td
+(Optical) Tj
+-55.0 -219.0100000000001 Td
+125.0 219.0100000000001 Td
+(prox_covered) Tj
+-125.0 -219.0100000000001 Td
+235.0 219.0100000000001 Td
+(Boolean) Tj
+-235.0 -219.0100000000001 Td
+300.0 219.0100000000001 Td
+(True / False) Tj
+-300.0 -219.0100000000001 Td
+380.0 219.0100000000001 Td
+(Infrared proximity obstruction flag \(pocket\)) Tj
+-380.0 -219.0100000000001 Td
+ET
+Q
+q
+1.0 1.0 1.0 rg
+50 198.0100000000001 495.28 16 re f
+0.85 0.88 0.92 RG 0.5 w
+50 198.0100000000001 m 545.28 198.0100000000001 l S
+0.15 0.18 0.22 rg
+BT
+/F1 8.0 Tf
+55.0 203.0100000000001 Td
+(Optical) Tj
+-55.0 -203.0100000000001 Td
+125.0 203.0100000000001 Td
+(ambient_lux) Tj
+-125.0 -203.0100000000001 Td
+235.0 203.0100000000001 Td
+(Float \(lx\)) Tj
+-235.0 -203.0100000000001 Td
+300.0 203.0100000000001 Td
+(0.0 - 10k lx) Tj
+-300.0 -203.0100000000001 Td
+380.0 203.0100000000001 Td
+(Ambient photometer \(open air vs enclosed\)) Tj
+-380.0 -203.0100000000001 Td
+ET
+Q
+q
+0.97 0.98 0.99 rg
+50 182.0100000000001 495.28 16 re f
+0.85 0.88 0.92 RG 0.5 w
+50 182.0100000000001 m 545.28 182.0100000000001 l S
+0.15 0.18 0.22 rg
+BT
+/F1 8.0 Tf
+55.0 187.0100000000001 Td
+(Acoustic) Tj
+-55.0 -187.0100000000001 Td
+125.0 187.0100000000001 Td
+(thd_percentage) Tj
+-125.0 -187.0100000000001 Td
+235.0 187.0100000000001 Td
+(Float \(%\)) Tj
+-235.0 -187.0100000000001 Td
+300.0 187.0100000000001 Td
+(1.0 - 50.0%) Tj
+-300.0 -187.0100000000001 Td
+380.0 187.0100000000001 Td
+(Total Harmonic Distortion \(speaker resonance\)) Tj
+-380.0 -187.0100000000001 Td
+ET
+Q
+q
+1.0 1.0 1.0 rg
+50 166.0100000000001 495.28 16 re f
+0.85 0.88 0.92 RG 0.5 w
+50 166.0100000000001 m 545.28 166.0100000000001 l S
+0.15 0.18 0.22 rg
+BT
+/F1 8.0 Tf
+55.0 171.0100000000001 Td
+(Acoustic) Tj
+-55.0 -171.0100000000001 Td
+125.0 171.0100000000001 Td
+(high_freq_cutoff) Tj
+-125.0 -171.0100000000001 Td
+235.0 171.0100000000001 Td
+(Float \(kHz\)) Tj
+-235.0 -171.0100000000001 Td
+300.0 171.0100000000001 Td
+(8.0 - 20.0 kHz) Tj
+-300.0 -171.0100000000001 Td
+380.0 171.0100000000001 Td
+(Spectral rolloff \(TV codec vs bio scream\)) Tj
+-380.0 -171.0100000000001 Td
+ET
+Q
+q
+0.97 0.98 0.99 rg
+50 150.0100000000001 495.28 16 re f
+0.85 0.88 0.92 RG 0.5 w
+50 150.0100000000001 m 545.28 150.0100000000001 l S
+0.15 0.18 0.22 rg
+BT
+/F1 8.0 Tf
+55.0 155.0100000000001 Td
+(Acoustic) Tj
+-55.0 -155.0100000000001 Td
+125.0 155.0100000000001 Td
+(voice_stress) Tj
+-125.0 -155.0100000000001 Td
+235.0 155.0100000000001 Td
+(Boolean) Tj
+-235.0 -155.0100000000001 Td
+300.0 155.0100000000001 Td
+(True / False) Tj
+-300.0 -155.0100000000001 Td
+380.0 155.0100000000001 Td
+(Vocal fold distress classifier) Tj
+-380.0 -155.0100000000001 Td
+ET
+Q
+q
+1.0 1.0 1.0 rg
+50 134.0100000000001 495.28 16 re f
+0.85 0.88 0.92 RG 0.5 w
+50 134.0100000000001 m 545.28 134.0100000000001 l S
+0.15 0.18 0.22 rg
+BT
+/F1 8.0 Tf
+55.0 139.0100000000001 Td
+(Engine) Tj
+-55.0 -139.0100000000001 Td
+125.0 139.0100000000001 Td
+(action) Tj
+-125.0 -139.0100000000001 Td
+235.0 139.0100000000001 Td
+(String) Tj
+-235.0 -139.0100000000001 Td
+300.0 139.0100000000001 Td
+(VETO/DISPATCH) Tj
+-300.0 -139.0100000000001 Td
+380.0 139.0100000000001 Td
+(Deterministic arbitration decision outcome) Tj
+-380.0 -139.0100000000001 Td
+ET
+Q
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Contents 8 0 R /Resources << /Font << /F1 9 0 R /F2 10 0 R >> >> >>
+endobj
+8 0 obj
+<< /Length 6270 >>
+stream
+q
+0.12 0.16 0.22 rg
+0 811.89 595.28 30 re f
+1 1 1 rg
+BT
+/F2 9 Tf
+50 821.89 Td
+(SENTINEL AI  |  TECHNICAL & ALGORITHMIC SPECIFICATION REPORT) Tj
+ET
+Q
+q
+0.6 0.6 0.6 RG 0.5 w
+50 40 m 545.28 40 l S
+0.4 0.4 0.4 rg
+BT
+/F1 8 Tf
+50 28 Td
+(Confidential & Proprietary  -  Tamil Nadu Police Control Room 1091 / Singappen Task Force) Tj
+ET
+Q
+q
+0.94 0.96 0.98 rg
+50 770.89 495.28 20 re f
+0.85 0.12 0.25 rg
+50 770.89 3 20 re f
+0.12 0.16 0.24 rg
+BT
+/F2 11 Tf
+58 776.89 Td
+(5. REAL-WORLD SCENARIOS & DECISION RULES) Tj
+ET
+Q
+q
+0.18 0.65 0.42 rg
+BT
+/F2 9.0 Tf
+50.0 758.89 Td
+(Scenario A: Pocket / Bag Accidental Dial \(ASSERT VETO\)) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 745.01 Td
+(? Physical Trigger: Power button pressed 5 times while walking or phone bouncing inside handbag.) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 731.13 Td
+(? Telemetry State: Optical proximity covered \(True\), Ambient illuminance = 0.05 lx, Jerk = 0.65 g/s \(<) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 719.25 Td
+(2.0\), Voice stress = False.) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 705.37 Td
+(? Decision Output: ACTION = 'VETO', Reason = 'ACCIDENTAL_POCKET_DIAL', Confidence = 97%, Haptic =) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 693.49 Td
+('SILENT_ABORT'.) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 679.61 Td
+(? Result: Baseband 1091 emergency call suppressed without disturbing police control desks.) Tj
+ET
+Q
+q
+0.85 0.55 0.05 rg
+BT
+/F2 9.0 Tf
+50.0 659.73 Td
+(Scenario B: Television / Entertainment Scream \(ASSERT VETO\)) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 645.85 Td
+(? Physical Trigger: Acoustic spike detector triggered by a movie, gaming stream, or video playback.) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 631.97 Td
+(? Telemetry State: Kinetic IMU indicates stationary rest on table \(Jerk = 0.08 g/s, mean_g = 1.01\), Audio) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 620.09 Td
+(spectral cutoff = 14.2 kHz \(<= 15.0 kHz codec cutoff\).) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 606.21 Td
+(? Decision Output: ACTION = 'VETO', Reason = 'MEDIA_PLAYBACK_DETECTED', Confidence = 93%, Haptic =) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 594.33 Td
+('SILENT_ABORT'.) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 580.45 Td
+(? Result: Loudspeaker scream rejected as artificial media; alarm silently aborted.) Tj
+ET
+Q
+q
+0.85 0.12 0.25 rg
+BT
+/F2 9.0 Tf
+50.0 560.57 Td
+(Scenario C1: Violent Physical Assault / Struggle \(CONFIRM DISPATCH\)) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 546.69 Td
+(? Physical Trigger: Power button pressed or shake triggered while victim is actively attacked.) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 532.8100000000001 Td
+(? Telemetry State: Kinetic Jerk = 4.82 g/s \(> 3.0\), Rotational variance = 6.15 rad/s^2, mean_g = 2.45 g.) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 518.9300000000001 Td
+(? Decision Output: ACTION = 'DISPATCH', Confidence = 96%, Countdown = 0s, Haptic = 'DISTRESS_CONFIRMED'.) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 505.05000000000007 Td
+(? Result: Zero-countdown emergency call to 1091, loud siren alarm, offline SMS dispatch, audio evidence) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 493.1700000000001 Td
+(recording.) Tj
+ET
+Q
+q
+0.85 0.12 0.25 rg
+BT
+/F2 9.0 Tf
+50.0 473.2900000000001 Td
+(Scenario C2: Authentic Human Distress Scream \(CONFIRM DISPATCH\)) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 459.4100000000001 Td
+(? Physical Trigger: Woman vocalizes high-amplitude scream for help.) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 445.5300000000001 Td
+(? Telemetry State: Voice stress = True, High frequency harmonic cutoff = 19.4 kHz \(> 16.0 kHz) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 433.6500000000001 Td
+(uncompressed vocal folds\).) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 419.7700000000001 Td
+(? Decision Output: ACTION = 'DISPATCH', Confidence = 95%, Countdown = 0s, Haptic = 'DISTRESS_CONFIRMED'.) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 405.8900000000001 Td
+(? Result: Immediate connection to Singappen Police Control Room.) Tj
+ET
+Q
+q
+0.94 0.96 0.98 rg
+50 376.0100000000001 495.28 20 re f
+0.85 0.12 0.25 rg
+50 376.0100000000001 3 20 re f
+0.12 0.16 0.24 rg
+BT
+/F2 11 Tf
+58 382.0100000000001 Td
+(6. PATENT CLAIM DRAFTING BLUEPRINT \(35 U.S.C. Section 101\)) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 364.0100000000001 Td
+(To protect Sentinel AI's technical intellectual property, the method claims focus strictly on physical) Tj
+ET
+Q
+q
+0.15 0.15 0.18 rg
+BT
+/F1 9.0 Tf
+50.0 352.1300000000001 Td
+(signal transformations rather than abstract machine learning:) Tj
+ET
+Q
+q
+0.15 0.18 0.24 rg
+BT
+/F1 8.0 Tf
+60.0 338.2500000000001 Td
+(Independent System Claim 1: A mobile computing apparatus comprising: an inertial measurement unit, an optical sensor) Tj
+ET
+Q
+q
+0.15 0.18 0.24 rg
+BT
+/F1 8.0 Tf
+60.0 327.6900000000001 Td
+(array, an acoustic transducer, a cellular baseband transceiver, and an execution processor coupled to memory,) Tj
+ET
+Q
+q
+0.15 0.18 0.24 rg
+BT
+/F1 8.0 Tf
+60.0 317.1300000000001 Td
+(wherein the processor is configured to: detect an emergency trigger event while in a low-power dormant state; open a) Tj
+ET
+Q
+q
+0.15 0.18 0.24 rg
+BT
+/F1 8.0 Tf
+60.0 306.5700000000001 Td
+(temporal micro-burst capture window of 2,000 milliseconds querying the inertial, optical, and acoustic transducers;) Tj
+ET
+Q
+q
+0.15 0.18 0.24 rg
+BT
+/F1 8.0 Tf
+60.0 296.0100000000001 Td
+(compute an inertial jerk vector J = da/dt; compute an optical containment parameter; compute an acoustic frequency) Tj
+ET
+Q
+q
+0.15 0.18 0.24 rg
+BT
+/F1 8.0 Tf
+60.0 285.4500000000001 Td
+(cutoff parameter; programmatically assert a veto command suppressing initiation of an outgoing baseband emergency) Tj
+ET
+Q
+q
+0.15 0.18 0.24 rg
+BT
+/F1 8.0 Tf
+60.0 274.8900000000001 Td
+(dispatch to a remote police terminal upon determining the optical sensor is obstructed, the jerk vector remains) Tj
+ET
+Q
+q
+0.15 0.18 0.24 rg
+BT
+/F1 8.0 Tf
+60.0 264.3300000000001 Td
+(below 2.0 g/s, and acoustic voice stress is absent; and selectively authorize baseband emergency dispatch upon) Tj
+ET
+Q
+q
+0.15 0.18 0.24 rg
+BT
+/F1 8.0 Tf
+60.0 253.7700000000001 Td
+(detecting either jerk magnitude exceeding 3.0 g/s or an acoustic spectral rolloff exceeding 16.0 kHz.) Tj
+ET
+Q
+endstream
+endobj
+9 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+10 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+xref
+0 11
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000127 00000 n 
+0000000270 00000 n 
+0000005581 00000 n 
+0000005724 00000 n 
+0000016573 00000 n 
+0000016716 00000 n 
+0000023038 00000 n 
+0000023108 00000 n 
+trailer
+<< /Size 11 /Root 1 0 R >>
+startxref
+23184
+%%EOF
